@@ -1,0 +1,38 @@
+{
+  "name": "various",
+  "version": "1.0.0",
+  "description": "node react mongoDB",
+  "main": "app.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production node app.js",
+    "server": "nodemon app.js",
+    "client": "npm run start --prefix client",
+    "client:install": "npm install --prefix client",
+    "client:build": "npm run build --prefix client",
+    "dev": "cross-env NODE_ENV=development concurrently \"npm run server\" \"npm run client\""
+  },
+  "keywords": [
+    "react",
+    "js",
+    "node",
+    "mongo"
+  ],
+  "author": "Yehorushkin Serhii <cery.122002@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cloudinary": "^1.35.0",
+    "config": "^3.3.9",
+    "express": "^4.18.2",
+    "express-validator": "^6.14.3",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^6.9.0",
+    "react-select": "^5.7.0",
+    "socket.io": "^4.6.1"
+  },
+  "devDependencies": {
+    "concurrently": "^7.6.0",
+    "cross-env": "^7.0.3",
+    "nodemon": "^2.0.20"
+  }
+}

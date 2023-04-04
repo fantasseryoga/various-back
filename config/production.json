@@ -1,0 +1,14 @@
+{
+    "port": 5000,
+    "baseUrl": "http://localhost:5000",
+    "jwtSecret": "lilsecret",
+    "mongoUri": "mongodb+srv://Admin:djhvbrc12@clustervarious.s1kok6b.mongodb.net/?retryWrites=true&w=majority",
+    "cdnProducts": "various/products/",
+    "cdnAvatars": "various/avatars/",
+    "cdnAdvertisements": "various/advertisements/",
+    "advActiveStatusId": "64064a569cf211501d40ae12",
+    "advPaginationPerPage": 5,
+    "cndCloudName": "deelxfjof",
+    "cdnKey":  "988197764189918",
+    "cdnSecret": "-zpzLEpuXyLO-NYAZhdOzQbizaE"
+}
