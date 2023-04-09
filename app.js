@@ -20,13 +20,13 @@ app.use('/api/ratings', require('./routes/ratings.routes'))
 app.use('/api/category', require('./routes/categories.routes'))
 app.use('/api/users', require('./routes/user.routes'))
 
-if (process.env.NODE_ENV === 'production') {
-    app.use('/', express.static(path.resolve(__dirname, 'index.html')))
+// if (process.env.NODE_ENV === 'production') {
+//     app.use('/', express.static(path.resolve(__dirname, 'index.html')))
 
-    app.get('*', (req, res) => {
-        res.sendFile(path.resolve(__dirname, 'index.html'))
-    })
-}
+//     app.get('*', (req, res) => {
+//         res.sendFile(path.resolve(__dirname, 'index.html'))
+//     })
+// }
 
 //////////////////////////// CDN CONFIG ///////////////////////////
 cloudinary.config({
