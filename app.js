@@ -42,7 +42,7 @@ async function start() {
             useUnifiedTopology: true
         })
         await Chat.updateMany({}, { sockets: [] })
-        http.listen(PORT, () => {
+        http.listen(process.env.PORT || PORT, () => {
             console.log(`App has been started on port ${PORT} ...`)
         })
     } catch (e) {
