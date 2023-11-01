@@ -156,6 +156,7 @@ router.post('/create-advertisement',
 
 router.post("/get-advertisement-by-id", auth, async (req, res) => {
     try {
+        const userId = req.user.userId
         const { advertisementId } = req.body
         const advertisement = await Advertisement.findOne({ _id: advertisementId })
 
@@ -224,6 +225,7 @@ router.post("/get-advertisement-by-id", auth, async (req, res) => {
         })
 
         const rating = advertisement.ratingCount === 0 ? 0 : advertisement.ratingValue / advertisement.ratingCount
+        const mine = userId.toString() === advertisement.createdBy.toString()
 
         const body = {
             advertisement: {
@@ -241,6 +243,7 @@ router.post("/get-advertisement-by-id", auth, async (req, res) => {
                 advCities: cities,
                 advComments: advComments,
                 advRatings: advRatings,
+                mine: mine,
                 user: {
                     firstName: user.firstName,
                     surName: user.surName,

@@ -5,8 +5,8 @@ const mongoose = require('mongoose')
 const cloudinary = require('cloudinary').v2
 const PORT = config.get('port') || 5000
 const app = express()
-const https = require('https').createServer(app)
-const chat = require("./socket/chat.js")(https)
+const http = require('http').createServer(app)
+const chat = require("./socket/chat.js")(http)
 const Chat = require("./models/Chat.js")
 
 app.use((req, res, next) => {
@@ -53,7 +53,7 @@ async function start() {
             useUnifiedTopology: true
         })
         await Chat.updateMany({}, { sockets: [] })
-        https.listen(process.env.PORT || PORT, () => {
+        http.listen(process.env.PORT || PORT, () => {
             console.log(`App has been started on port ${PORT} ...`)
         })
     } catch (e) {

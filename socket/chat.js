@@ -193,8 +193,9 @@ module.exports = (http) => {
         socket.on("send-message", async message => {
             try {
                 const chat = await Chat.findOne({ _id: message.chatId })
-
+                console.log(message)
                 if (!chat) return
+                if (message.msg === '' && !message.attachment) return
                 if (chat.createdBy.toString() != user._id.toString() && chat.createdTo.toString() != user._id.toString()) return
 
                 const companionId = chat.createdBy.toString() === user._id.toString() ? chat.createdTo : chat.createdBy
@@ -206,7 +207,7 @@ module.exports = (http) => {
                     fileName = "message_" + message.chatId.replaceAll(' ', '') + "_" + Date.now()
                     await cloudinary.uploader.upload(message.attachment, { public_id: fileName, folder: "various/messages/", invalidate: true })
                 }
-
+                
                 const newMessage = new Message({
                     text: message.msg,
                     chat: message.chatId,

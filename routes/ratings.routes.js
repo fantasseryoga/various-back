@@ -41,6 +41,21 @@ router.post('/create-rating', auth,
             }
 
             const advObj = await Advertisement.findOne({ _id: advertisementId })
+            if(user.userId === advObj.createdBy){
+                return res.status(400).json(
+                    {
+                        errors: [
+                            {
+                                "value": user,
+                                "msg": "You can't rate yourself",
+                                "param": "user",
+                                "location": "body"
+                            }
+                        ],
+                        message: 'Incorrect Data'
+                    }
+                )
+            }
 
             advObj.ratingCount += 1
             advObj.ratingValue += Number(ratingValue)
