@@ -98,6 +98,7 @@ module.exports = (http) => {
                             online: companion.online,
                             phoneNumber: companion.phoneNumber,
                             avatar: companion.avatar,
+                            _id: companion._id
                         },
                         _id: el.id,
                         createdOn: el.createdOn,
