@@ -8,7 +8,7 @@ module.exports = (http) => {
 
     const io = require("socket.io")(http, {
         cors: {
-            origin: "http://54.85.108.71:3000",
+            origin: "http://100.24.15.201:3000",
             methods: ["GET", "POST"]
         },
         maxHttpBufferSize: 1e8
