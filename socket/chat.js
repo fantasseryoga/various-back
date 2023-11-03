@@ -8,7 +8,7 @@ module.exports = (http) => {
 
     const io = require("socket.io")(http, {
         cors: {
-            origin: "http://100.24.15.201:3000",
+            origin: "http://54.89.82.28:3000",
             methods: ["GET", "POST"]
         },
         maxHttpBufferSize: 1e8
@@ -26,26 +26,26 @@ module.exports = (http) => {
         console.log(user.firstName + " " + user.surName + " connected to the socket.")
         socket.emit("connected", null)
 
-        socket.on("get-chats", async profile => {
+        socket.on("get-chats", async (profile) => {
             try {
                 const userId = user._id
-                const chats = await Chat.find({ $or: [{ createdBy: userId }, { createdTo: userId }] })
+                const chats = await Chat.find({ $or: [{ createdBy: userId }, { createdTo: userId }] }).limit(profile.limit)
 
                 let chatProfile
-                if (profile.profileId) {
-                    chatProfile = await Chat.findOne({ $or: [{ createdBy: profile.profileId, createdTo: userId }, { createdTo: profile.profileId, createdBy: userId }] })
+                if (profile.profile.profileId) {
+                    chatProfile = await Chat.findOne({ $or: [{ createdBy: profile.profile.profileId, createdTo: userId }, { createdTo: profile.profile.profileId, createdBy: userId }] })
                     if (!chatProfile) {
                         chatProfile = new Chat({
-                            name: profile.profileId,
+                            name: profile.profile.profileId,
                             createdBy: userId,
-                            createdTo: profile.profileId,
+                            createdTo: profile.profile.profileId,
                             sockets: [socket.id]
                         })
                         chats.push(chatProfile)
 
                         await chatProfile.save()
                     } else {
-                        const unreadMessages = await Message.updateMany({ chat: chatProfile._id, read: false, createdBy: profile.profileId }, { read: true })
+                        const unreadMessages = await Message.updateMany({ chat: chatProfile._id, read: false, createdBy: profile.profile.profileId }, { read: true })
                         chatProfile.sockets.push(socket.id)
                         await chatProfile.save()
                     }
@@ -68,10 +68,10 @@ module.exports = (http) => {
                 const companions = await User.find({ _id: companionsIds })
                 const messagesUnread = await Message.find({ chat: chats.map(el => el._id), createdBy: { $ne: userId }, read: false })
                 const currentChatMessages = chatProfile ? await Message.find({ chat: chatProfile._id }) : []
-                const currentChatCompanion = chatProfile ? await User.findOne({ _id: profile.profileId }) : null
+                const currentChatCompanion = chatProfile ? await User.findOne({ _id: profile.profile.profileId }) : null
 
                 const chatsMerged = chats.map(el => {
-                    let current = profile.profileId ? (chatProfile._id.toString() === el._id.toString() ? true : false) : false
+                    let current = profile.profile.profileId ? (chatProfile._id.toString() === el._id.toString() ? true : false) : false
 
                     let companion
                     let unread = false
@@ -193,7 +193,6 @@ module.exports = (http) => {
         socket.on("send-message", async message => {
             try {
                 const chat = await Chat.findOne({ _id: message.chatId })
-                console.log(message)
                 if (!chat) return
                 if (message.msg === '' && !message.attachment) return
                 if (chat.createdBy.toString() != user._id.toString() && chat.createdTo.toString() != user._id.toString()) return
